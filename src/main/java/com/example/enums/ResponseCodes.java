@@ -1,0 +1,21 @@
+package com.example.enums;
+
+public enum ResponseCodes {
+
+	 OK("200"),CREATED("201"),ACCEPTED("202"),NO_CONTENT("204"),MOVED_PERMANENTLY("301"),
+	 FOUND("302"),NOT_MODIFIED("304"),TEMPORARY_REDIRECT("307"),BAD_REQUEST("400"),FORBIDDEN("403"),
+	 NOT_FOUND("404"),METHOD_NOT_ALLOWED("405"),NOT_ACCEPTABLE("406"),CONFLICT("409"),
+	 PRECONDITION_FAILED("412"),REQUEST_ENTITY_TOO_LARGE("413"),REQUEST_URI_TOO_LONG("414"),
+	 UNPROCESSABLE_ENTITY("422"),INTERNAL_SERVER_ERROR("500"),SERVICE_UNAVAILABLE("503");
+	
+	private final String name;
+
+	private ResponseCodes(String s) {
+		name = s;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+}
