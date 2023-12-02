@@ -87,14 +87,17 @@ public class WriteToExcel {
             }
 
             catch (MaxUploadSizeExceededException e) {
+            	e.printStackTrace();
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Output File size exceeds than permissible limits.",
                         new OutputUploadException());
             }
             catch (UncheckedIOException e) {
+            	e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Please check blob configuration.",
                     new OutputUploadException());
            }
             catch (Exception e) {
+            	e.printStackTrace();
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Exception found in generating billing worksheet",
                         new BillingCannotBeGeneratedException());
             }finally {

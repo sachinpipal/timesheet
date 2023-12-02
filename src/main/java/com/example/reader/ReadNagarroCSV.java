@@ -126,10 +126,11 @@ public class ReadNagarroCSV {
             return nagarroDataMap;
 
         } catch (FileNotFoundException e) {
+        	e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "SAP data not uploaded.",
                     new IncorrectSAPDataException());
         } catch (Exception e) {
-        	//e.printStackTrace();
+        	e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exception occurred while reading SAP data",
                     new IncorrectSAPDataException());
         }

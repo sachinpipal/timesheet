@@ -59,29 +59,34 @@ public class AttendanceController {
                                 FileInputStream fis = (FileInputStream) file.getInputStream();
                                 maps.setNagarroMap(readNagarroCSV.getNagarroData(fis));
                                 maps.setProjectName(str.substring(0,str.indexOf(".")));
+                                System.out.println(file.getOriginalFilename()+" file processed.");
                             }
                             else  if (file.getOriginalFilename().contains(".csv")) {
                                 maps.setProWandEmpMap(loadDataIntoMap(file.getInputStream()));
                                 maps.setProjectCode(file.getOriginalFilename().substring(0,file.getOriginalFilename().indexOf(".")));
-
+                                System.out.println(file.getOriginalFilename()+" file processed.");
                             }
                             else if (file.getOriginalFilename().contains("WAND")) {
                                 File wandfile = new File("WAND.xlsx");
                                 FileOutputStream outputStream = new FileOutputStream(wandfile);
                                 IOUtils.copy(file.getInputStream(), outputStream);
                                 maps.setProWANDTimesheetData(readWANDexcel.getMcKinseyTimesheetData(wandfile));
+                                System.out.println(file.getOriginalFilename()+" file processed.");
                             }
                             else
                             {
+                            	System.out.println(file.getOriginalFilename()+" Incorrect file  extension.");
                                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect file extension(s) found.",
                                         new InvalidFileFormatException());
                             }
 
                         }
                         catch (ResponseStatusException responseStatusException) {
+                        	responseStatusException.printStackTrace();
                             throw new ResponseStatusException(responseStatusException.getStatus(), responseStatusException.getReason());
                         }
                         catch (Exception e) {
+                        	e.printStackTrace();
                             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something wrong with input streams");
                         }
                     }
@@ -94,8 +99,9 @@ public class AttendanceController {
                 return ResponseEntity.status(resEx.getStatus()).body(resEx.getReason());
             }
             catch (Exception e) {
-               // System.out.println("files are read; output streams have run into a problem!!");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            	e.printStackTrace();
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something wrong with input streams");
+               // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
 
         /*    backup code to return the output file as the response type instead of uploading the same to azure BLOB
@@ -167,8 +173,8 @@ public class AttendanceController {
 
             }
             catch (FileNotFoundException e) {
-                System.out.println("Please rectify the csv file!!");
-                return null;
+            	e.printStackTrace();
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something wrong with CSV file");
             }
            return namesEmpIdMap;
     }

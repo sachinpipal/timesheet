@@ -126,10 +126,12 @@ public class ReadWANDexcel {
             }
         } catch (FileNotFoundException e) {
             System.out.println("WAND dump file is missing");
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect WAND data",
+                    new IncorrectWandDataException());
         } catch (Exception e) {
-            System.out.println("Exception occurred while reading WAND data..." + e.getMessage());
-            return null;
+        	e.printStackTrace();
+        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect WAND data",
+                    new IncorrectWandDataException());
         }
 
         Map<String, List<String>> clientDataMap = new HashMap<>();
